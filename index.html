@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title data-i18n> WeChat UI Builder  by Arch.beta2@gmail.com </title>
+     
+
+
+      <meta charset="UTF-8">
+      <script src="lib/jquery.min.js"></script>
+      <script src="js/constants.js"></script>
+      <script src="js/scenario102.js"></script>
+      <script src="js/wcAgent.js"></script>     
+      
+</head>
+
+<body>
+  <div id = "images">
+  <div id = "customImages">
+  <!--
+    <img id="phoneHLeft" alt="Drawing to save" src="./images/common/phoneHLeft.png"  style="display:none"/> 
+  -->
+  </div>
+    <div id="controls">
+     <button type="button" onclick="initCanvas();">Recreation</button>
+     <button type="button" onclick="exportCanvas();">Export ... </button>
+   
+     </div>
+  
+ <canvas id="canvas"/>
+ <img id="canvasImg" alt="Right click to save me!">
+ 
+
+ <script>
+ $(document).ready(function(){
+   initImages();
+   
+    //initCanvas();
+ });
+ window.setTimeout("initCanvas();",1000);
+ 
+ </script>
+<body>
+</html>
