@@ -35,15 +35,15 @@ INSTALLATION:
 
 USAGE:
   Edit the 'index.html' with a text editor, change this line only: 
-           <script src="js/scenario102.js"></script>
-  Of course, you there must a scenario file ready to use (or an example file to demo). 
+           script src="js/scenario102.js">
+  Of course, there must a scenario file ready to use (or an example file to demo). 
   The scenario file has syntax rules - it is a javascript file. And, it has some rules?
   What are they? Please modify it based on the sample (or can be called template). Any 
   problems, feel free to mail me.
 
 ISSUE:
   Although the image can be generated automatically, export it is of some difficulty.
-  
+
 
 
 
