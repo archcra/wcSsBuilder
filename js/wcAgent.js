@@ -17,14 +17,13 @@ function exportCanvas(){
 	var canvas = document.getElementById('canvas');
     // save canvas image as data url (png format by default)
     var dataURL = canvas.toDataURL();
-    console.log(dataURL);
 
          // set canvasImg image src to dataURL
          // so it can be saved as an image
          document.getElementById('canvasImg').src = dataURL;
          
      }
-function initCanvas(){
+     function initCanvas(){
      	var canvas = document.getElementById('canvas');
      	if (canvas) {
 	    canvas.setAttribute('width', scenario.screen.width); //TODO: add if null then default: __screen
@@ -97,7 +96,6 @@ function initCanvas(){
     //var canvas = document.getElementById('canvas');
     // save canvas image as data url (png format by default)
     var dataURL = canvas.toDataURL();
-    console.log(dataURL);
          // set canvasImg image src to dataURL
          // so it can be saved as an image
          document.getElementById('canvasImg').src = dataURL;
@@ -124,24 +122,23 @@ function initImageObjects(){
 	var keys = Object.keys(scenario.roles);
 	for (i=0;i<keys.length;i++){
 		imageObjects.push({id:keys[i], file:"images/profile/"+keys[i]+".png"});
-    }
+	}
 
 
 	//TODO prepare SYSTEM_IMAGE objects
-    for (i=0;i<scenario.dialogs.length;i++){
-    	var key = Object.keys(scenario.dialogs[i])[0];
-    	if(key == "SYSTEM_IMAGE"){
-    		var imageName = scenario.dialogs[i][key];
-		     imageObjects.push({id:imageName, file:"images/dialog/"+imageName+".png"});
-        }
-    }
+	for (i=0;i<scenario.dialogs.length;i++){
+		var key = Object.keys(scenario.dialogs[i])[0];
+		if(key == "SYSTEM_IMAGE"){
+			var imageName = scenario.dialogs[i][key];
+			imageObjects.push({id:imageName, file:"images/dialog/"+imageName+".png"});
+		}
+	}
 
-    return imageObjects;
+	return imageObjects;
 }
 
 function initImages(){
 	var imageObjects = initImageObjects();
-	console.log(imageObjects);
 	var imagesElement = document.getElementById('images');
 	var newImage;
 	for (i=0;i<imageObjects.length;i++){
@@ -149,23 +146,9 @@ function initImages(){
 		newImage.setAttribute('id', imageObjects[i].id); 
 		newImage.setAttribute('alt', imageObjects[i].id); 
    	 	newImage.setAttribute('src', imageObjects[i].file);//'./images/common/phoneHLeft.png'); 
-		newImage.setAttribute('style', 'display:none'); 
-		imagesElement.appendChild(newImage);
-	}
-/*
-var customImagesElement = document.getElementById('customImages');
-
-var customImage;
-for (i=0;i<customImageObjects.length;i++){
-	console.log(customImageObjects[i].id);
-	customImage = document.createElement('img');
-	customImage.setAttribute('id', customImageObjects[i].id); 
-	customImage.setAttribute('alt', customImageObjects[i].id); 
-   	 customImage.setAttribute('src', customImageObjects[i].file);//'./images/common/phoneHLeft.png'); 
-customImage.setAttribute('style', 'display:none'); 
-imagesElement.appendChild(customImage);
+newImage.setAttribute('style', 'display:none'); 
+imagesElement.appendChild(newImage);
 }
-*/
 }
 
 function drawDialogs(ctx){
@@ -177,15 +160,11 @@ function drawDialogs(ctx){
 		dialogHeight = drawDialog(scenario.dialogs[i], yOffset,ctx );
 		yOffset += dialogHeight;
 	}
-	
 }
-
-
 
 function drawDialog(info, y, ctx){
 	var subject = Object.keys(info)[0];
 	var infoHeight = 0;
-
 	
 	switch(subject){
 		case "SYSTEM":
@@ -198,7 +177,6 @@ function drawDialog(info, y, ctx){
 		infoHeight = drawTheme(info[subject],y, ctx);
 		break;
 	default://Others, the left IDs.
-	console.log(info[subject]);
 	infoHeight = drawOthers(subject, info[subject],y, ctx);
 	break;
 	
@@ -230,13 +208,11 @@ function drawOthers(subject, infoContent,y , context){
   fillTextMultiLine(context, infoContent, 
   	dialog.LEFT_PROFILE_X + dialog.PROFILE_PHOTO_WIDTH + dialog.LEFT_BRACKET_MARGIN + dialog.TRIANGLE_WIDTH + dialog.FRAME_X_MARGIN,
   	y + dialog.PROFILE_PHOTO_HEIGHT/2 );
-  console.log(subject);
   return dialogSize.height + dialog.PROFILE_PHOTO_HEIGHT/2;
 
 }
 
 function drawOthersProfile(subject, y, context){
-	console.log("this subject is:" + subject);
 	var img=document.getElementById(subject);
 
 	
@@ -252,7 +228,7 @@ function drawOthersProfile(subject, y, context){
 	
 	
 		//draw the profile name
-		context.fillText(scenario[subject], 
+		context.fillText(subject, 
 			dialog.LEFT_PROFILE_X + dialog.PROFILE_PHOTO_WIDTH + dialog.LEFT_BRACKET_MARGIN + dialog.TRIANGLE_WIDTH, 
 			y + dialog.CHAT_ID_TEXT_HEIGHT);
 	}
@@ -260,7 +236,6 @@ function drawOthersProfile(subject, y, context){
 
 
 	function drawLeftDialog(y, dialogWidth, dialogHeight, context){
-		console.log("Width" + dialogWidth +";height " + dialogHeight);
 		context.lineWidth = 1;
 		var frameTop = y + dialog.PROFILE_PHOTO_HEIGHT/2;
 		
@@ -312,9 +287,7 @@ function drawOthersProfile(subject, y, context){
      }
 
      function drawThemeProfile(y, context){
-     	var img=document.getElementById("theme");
-         console.log("this image:" + img);
-     	
+     	var img=document.getElementById("theme");     	
      	var drawLeft = scenario.screen.width +dialog.RIGHT_PROFILE_X_OFFSET - dialog.PROFILE_PHOTO_WIDTH;
 
      	context.drawImage(img,0,0,  img.width, img.height,
@@ -380,7 +353,6 @@ function drawOthersProfile(subject, y, context){
 		function getDialogSize(ctx, text) {
 			ctx.font = scenario.screen.DIALOG_TEXT_FONT;
 			var rowHeight = ctx.measureText("字").width * scenario.screen.FONT_RATIO;
-			console.log("rowHeight" + rowHeight);
 			var lines = text.split("\n");
 			
 			var lineWidth = -1;
@@ -389,45 +361,31 @@ function drawOthersProfile(subject, y, context){
 			}else{
 				lineWidth =ctx.measureText(lines[0]).width + dialog.FRAME_X_MARGIN * 2+ dialog.FRAME_BOTTOM_OFFSET;
 			}
-  /*
-  var lineWidth = (lines.length > 1) && (screen.widith - dialog.DEFAULT_MARGIN - 
-	  dialog.PROFILE_PHOTO_WIDTH - dialog.TRIANGLE_WIDTH  - dialog.OPPOSITE_MARGIN - 10)
-  || (ctx.measureText(lines[0]).width - 50);
-  */
 
-  
-  var dialogHeight = rowHeight * lines.length  + dialog.FRAME_Y_MARGIN * 2 + dialog.FRAME_BOTTOM_OFFSET;
-  //if (dialogHeight< dialog.PROFILE_PHOTO_HEIGHT)
-    // dialogHeight = dialog.PROFILE_PHOTO_HEIGHT;
- // console.log("y is " + y);
- console.log("dialog height----:" +dialogHeight );
- return {width:lineWidth, height: dialogHeight};
-}
+			var dialogHeight = rowHeight * lines.length  + dialog.FRAME_Y_MARGIN * 2 + dialog.FRAME_BOTTOM_OFFSET;
+			return {width:lineWidth, height: dialogHeight};
+		}
 
 
-function drawSystemInfo(infoContent, y, context){
+		function drawSystemInfo(infoContent, y, context){
         //sib - System Information background
   //TODO: magic number 
   context.font = scenario.screen.SYS_INFO_FONT;
-  console.log("font" + context.font);
   var textLength = context.measureText(infoContent).width;
 var textHeight = 16; //context.measureText(infoContent).height;
- //console.log("text height"+ textHeight);
+context.fillStyle = getColor("sysInfoBackground");
+var sibLeft = (scenario.screen.width - dialog.SYS_INFO_LEFT_SPACING - textLength)/2;
+var rectHeight = textHeight + 2 * dialog.SYS_INFO_TEXT_HEIGHT_MARGIN
+roundRect (context, sibLeft- dialog.SYS_INFO_TEXT_WIDTH_MARGIN, y, 
+	textLength + 2 * dialog.SYS_INFO_TEXT_WIDTH_MARGIN,
+	rectHeight, 10, true);
 
-         //console.log("text width is :" + textLength);
-         context.fillStyle = getColor("sysInfoBackground");
-         var sibLeft = (scenario.screen.width - dialog.SYS_INFO_LEFT_SPACING - textLength)/2;
-         var rectHeight = textHeight + 2 * dialog.SYS_INFO_TEXT_HEIGHT_MARGIN
-         roundRect (context, sibLeft- dialog.SYS_INFO_TEXT_WIDTH_MARGIN, y, 
-         	textLength + 2 * dialog.SYS_INFO_TEXT_WIDTH_MARGIN,
-         	rectHeight, 10, true);
+context.fillStyle = "white";
+context.fillText(infoContent, sibLeft, y + textHeight + dialog.SYS_INFO_TEXT_HEIGHT_MARGIN -2);
 
-         context.fillStyle = "white";
-         context.fillText(infoContent, sibLeft, y + textHeight + dialog.SYS_INFO_TEXT_HEIGHT_MARGIN -2);
+return rectHeight;
 
-         return rectHeight;
-
-     }
+}
 
 /**
  * Draws a rounded rectangle using the current state of the canvas. 
