@@ -228,7 +228,7 @@ function drawOthersProfile(subject, y, context){
 	
 	
 		//draw the profile name
-		context.fillText(subject, 
+		context.fillText(scenario.roles[subject], 
 			dialog.LEFT_PROFILE_X + dialog.PROFILE_PHOTO_WIDTH + dialog.LEFT_BRACKET_MARGIN + dialog.TRIANGLE_WIDTH, 
 			y + dialog.CHAT_ID_TEXT_HEIGHT);
 	}
