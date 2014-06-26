@@ -12,31 +12,30 @@ function fillLengthWidthImage(from, to, y, image, ctx){
 	
 }
 
-
 function exportCanvas(){
 	var canvas = document.getElementById('canvas');
     // save canvas image as data url (png format by default)
     var dataURL = canvas.toDataURL();
 
-         // set canvasImg image src to dataURL
-         // so it can be saved as an image
-         document.getElementById('canvasImg').src = dataURL;
-         
-     }
-     function initCanvas(){
-     	var canvas = document.getElementById('canvas');
-     	if (canvas) {
+    // set canvasImg image src to dataURL
+    // so it can be saved as an image
+    document.getElementById('canvasImg').src = dataURL;
+}
+
+function initCanvas(){
+	var canvas = document.getElementById('canvas');
+	if (canvas) {
 	    canvas.setAttribute('width', scenario.screen.width); //TODO: add if null then default: __screen
 	    canvas.setAttribute('height', scenario.screen.height); 
 	}
 	
 	var ctx = canvas.getContext("2d");
-	//fill all the background
+	// Fill all the background
 	ctx.fillStyle = "#000000";	
 	ctx.fillRect(0,0,canvas.width,canvas.height);
 	
 	
-	//draw the phone status bar
+	// Draw the phone status bar
 	var img=document.getElementById("statusBarLeft");
 	var statusBarHeight = img.height;
 	ctx.drawImage(img,0,0);
@@ -45,12 +44,12 @@ function exportCanvas(){
 	ctx.drawImage(img,scenario.screen.width - img.width,0);
 	
 	
-	//draw the wc header
+	// Draw the wc header
 	var img=document.getElementById("wcBarLeft");
 	var wcBarLeftWidth = img.width;
 	var wcBarHeight = img.height;
 	ctx.drawImage(img,0,statusBarHeight+1);
-	
+
 	var img=document.getElementById("wcBarRight");
 	var wcBarRightWidth = img.width;
 	ctx.drawImage(img,scenario.screen.width - img.width,statusBarHeight);
@@ -58,11 +57,14 @@ function exportCanvas(){
 	var img=document.getElementById("wcBarMiddle");
 	fillLengthWidthImage(wcBarLeftWidth, scenario.screen.width - wcBarRightWidth, statusBarHeight , img, ctx);
 	
+	// Draw the group name
+	drawGroupName(ctx, statusBarHeight, wcBarHeight);
+
 	
 	//draw the wc footer
 	var img=document.getElementById("wcFooter");
 	var wcFooterHeight = img.height;
-	//TODO: magic number
+
 	var cbrWidth = dialog.cbrWidth;//Chatting Bar Right part Width
 	var cbsFrom = dialog.cbsFrom;//Chatting Bar Saying area from (x)
 	var cbbFrom = dialog.cbbFrom ; //Chatting Bar Blank area from (x)
@@ -71,24 +73,24 @@ function exportCanvas(){
 	ctx.drawImage(img,0,0, img.width - cbrWidth, img.height,
 		0, scenario.screen.height   - wcFooterHeight,img.width - cbrWidth, img.height  );
 	
-		 //Draw the right part
-		 ctx.drawImage(img,img.width - cbrWidth,0,  cbrWidth, img.height,
-		 	scenario.screen.width - cbrWidth, scenario.screen.height   - wcFooterHeight, cbrWidth, img.height  );
-		 
-			 //Draw the center part
-			 ctx.drawImage(img,cbbFrom ,0,  cbbWidth, img.height,
-			 	cbsFrom, scenario.screen.height   - wcFooterHeight, 
-			 	scenario.screen.width - cbrWidth - cbsFrom, img.height  );
-			 
-	//fill the wc body background
+	// Draw the right part
+	ctx.drawImage(img,img.width - cbrWidth,0,  cbrWidth, img.height,
+		scenario.screen.width - cbrWidth, scenario.screen.height   - wcFooterHeight, cbrWidth, img.height  );
+
+	// Draw the center part
+	ctx.drawImage(img,cbbFrom ,0,  cbbWidth, img.height,
+		cbsFrom, scenario.screen.height   - wcFooterHeight, 
+		scenario.screen.width - cbrWidth - cbsFrom, img.height  );
+
+	// Fill the wc body background
 	var colorStr= getColor("background"); 
 	ctx.fillStyle = colorStr;
 	ctx.fillRect(0,statusBarHeight + wcBarHeight,canvas.width,
 		canvas.height - statusBarHeight - wcBarHeight - wcFooterHeight);
 	
-		//Draw the dialogs
-		drawDialogs(ctx);
-		
+	// Draw the dialogs
+	drawDialogs(ctx);
+
 	//Draw the saysing
 	drawSaying(ctx, scenario.screen.height   -  wcFooterHeight);
 	
@@ -96,24 +98,39 @@ function exportCanvas(){
     //var canvas = document.getElementById('canvas');
     // save canvas image as data url (png format by default)
     var dataURL = canvas.toDataURL();
-         // set canvasImg image src to dataURL
-         // so it can be saved as an image
-         document.getElementById('canvasImg').src = dataURL;
-     }
+    // set canvasImg image src to dataURL
+    // so it can be saved as an image
+    document.getElementById('canvasImg').src = dataURL;
+}
 
-     function drawSaying(context, y){
-     	context.font =  scenario.screen.SAYING_FONT;
-     	
-     	context.fillText(scenario.common.saying,
-     		dialog.cbsFrom + dialog.SAYING_X_OFFSET , y + dialog.SAYING_Y_OFFSET);
-     	
-     	
-     }
+function drawSaying(context, y){
+	context.font =  scenario.screen.SAYING_FONT;
 
-     function getColor(name){
-     	var color= 
-     	"rgb("+ wcColor[name].r+","+
-     		wcColor[name].g+ "," +wcColor[name].b +")";
+	context.fillText(scenario.common.saying,
+		dialog.cbsFrom + dialog.SAYING_X_OFFSET , y + dialog.SAYING_Y_OFFSET);
+}
+
+function drawGroupName(context, y0, y1){
+	context.font =  scenario.screen.GROUP_NAME_FONT;
+
+    var groupNameWidth = scenario.common.groupName.length * 
+        context.measureText("字").width;
+    var groupNameX = (scenario.screen.width - groupNameWidth ) /2 ;
+    console.log('groupNameWidth', groupNameWidth, groupNameX, 
+    	scenario.common.groupName, y0 + y1 /2 + 
+        context.measureText("字").width/2 );
+
+    context.fillStyle = "white";
+	context.fillText(scenario.common.groupName,
+		groupNameX + scenario.screen.GROUP_NAME_X_OFFSET, y0 + y1 /2 + 
+        context.measureText("字").width* scenario.screen.FONT_RATIO/2
+		);
+}
+
+function getColor(name){
+	var color= 
+	"rgb("+ wcColor[name].r+","+
+		wcColor[name].g+ "," +wcColor[name].b +")";
 return color;
 }
 
