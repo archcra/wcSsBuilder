@@ -111,6 +111,7 @@ function drawSaying(context, y){
 }
 
 function drawGroupName(context, y0, y1){
+    
 	context.font =  scenario.screen.GROUP_NAME_FONT;
 
     var groupNameWidth = scenario.common.groupName.length * 
@@ -125,6 +126,9 @@ function drawGroupName(context, y0, y1){
 		groupNameX + scenario.screen.GROUP_NAME_X_OFFSET, y0 + y1 /2 + 
         context.measureText("字").width* scenario.screen.FONT_RATIO/2
 		);
+    
+    console.log('in drawGroupName with name', scenario.common.groupName, groupNameX ,  scenario.screen.GROUP_NAME_X_OFFSET, y0 + y1 /2 + 
+        context.measureText("字").width* scenario.screen.FONT_RATIO/2);
 }
 
 function getColor(name){
